@@ -12,6 +12,7 @@ public class Server {
 	private static ServerSocket ss;
 	public static void main(String[] args) throws IOException {
 		ss=new ServerSocket(10000);
+		
 		while (true) {
 	      Socket socket = ss.accept();
 	      System.out.println("收到请求");

@@ -1,10 +1,19 @@
 package test.test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 
 public class Test5 {
 
@@ -26,22 +35,54 @@ public class Test5 {
 //		}
 		
 		
-		Socket socket=new Socket();
-		SocketAddress sa=new SocketAddress() {
-			
-		};
-		DatagramSocket ds;
-		ServerSocket ss;
+//		Socket socket=new Socket();
+//		SocketAddress sa=new SocketAddress() {
+//			
+//		};
+//		DatagramSocket ds;
+//		ServerSocket ss;
 		
 		
 		
-		byte b = 0x35; //0011 0101
+//		byte b = 0x35; //0011 0101
 //	    System.out.println(byteToBit(b));  
 	    // JDK自带的方法，会忽略前面的 0  
 //	    System.out.println(Integer.toBinaryString(500));  
 	    
-		System.out.println(System.currentTimeMillis());
+//		System.out.println(System.currentTimeMillis());
 		
+		
+		File zipFile = new File("F:\\downloadfile\\test.zip");
+        File parent = zipFile.getParentFile(); 
+        if(parent!=null&&!parent.exists()){ 
+        	parent.mkdirs(); 
+        } 
+        if(zipFile.exists()){
+        	zipFile.delete();
+        }
+        try {
+			zipFile.createNewFile();
+			ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
+			
+			File files=new File("F:\\configpath");
+			File[] fileArr=files.listFiles();
+			
+			for(File file:fileArr){
+			    InputStream input = new FileInputStream(file);
+			    zipOut.putNextEntry(new ZipEntry(file.getName()));
+				byte[] b = new byte[2048];
+				int length;
+				while ((length = input.read(b)) > 0) {
+					zipOut.write(b, 0, length);
+				}
+			    input.close();
+			}
+			zipOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	 /** 
